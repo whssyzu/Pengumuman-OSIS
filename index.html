@@ -2,16 +2,17 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Pengumuman Hasil Seleksi OSIS</title>
+  <title>Pengumuman Hasil Seleksi OSIS & MPK</title>
   <style>
     body { font-family: Arial, sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; padding: 20px; }
     .card { background: white; border-radius: 8px; width: 100%; max-width: 500px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden; }
     .header { background: #0d47a1; color: white; padding: 15px; text-align: center; }
-    .content { padding: 20px; }
-    .status-pass { background-color: #2e7d32; color: white; padding: 15px; border-radius: 6px; text-align: center; font-weight: bold; }
-    .status-fail { background-color: #c62828; color: white; padding: 15px; border-radius: 6px; text-align: center; font-weight: bold; }
+    .content { padding: 20px; text-align: center; }
+    .status-pass { background-color: #2e7d32; color: white; padding: 15px; border-radius: 6px; font-weight: bold; }
+    .status-fail { background-color: #c62828; color: white; padding: 15px; border-radius: 6px; font-weight: bold; }
     input, button { width: 100%; padding: 10px; margin-top: 10px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
     button { background-color: #1976d2; color: white; border: none; font-weight: bold; cursor: pointer; }
+    .timer-display { font-size: 24px; font-weight: bold; color: #0d47a1; margin: 15px 0; background: #e3f2fd; padding: 15px; border-radius: 6px; }
     .hidden { display: none; }
   </style>
 </head>
@@ -19,30 +20,65 @@
 
 <div class="card">
   <div class="header">
-    <h3>PENGUMUMAN SELEKSI OSIS 2026/2027</h3>
+    <h3>PENGUMUMAN SELEKSI OSIS & MPK 2026/2027</h3>
   </div>
   <div class="content">
-    <div id="form-section">
-      <label for="nisn">Masukkan Nomor Pendaftaran / NISN:</label>
+
+    <!-- TAMPILAN TIMER -->
+    <div id="timer-section">
+      <p style="font-size: 14px; color: #555;">Pengumuman akan dibuka dalam:</p>
+      <div id="timer" class="timer-display">00h 00j 00m 00d</div>
+      <p style="font-size: 12px; color: #888;">Silakan tunggu hingga hitungan mundur selesai.</p>
+    </div>
+
+    <!-- TAMPILAN FORM -->
+    <div id="form-section" class="hidden">
+      <label for="nisn" style="text-align: left; display: block;">Masukkan Nomor Pendaftaran / NISN:</label>
       <input type="text" id="nisn" placeholder="Contoh: 12345">
       <button onclick="cekHasil()">LIHAT HASIL SELEKSI</button>
     </div>
 
-    <div id="result-section" class="hidden">
+    <!-- TAMPILAN HASIL -->
+    <div id="result-section" class="hidden" style="text-align: left;">
       <div id="status-box"></div>
       <div style="margin-top: 15px;" id="user-details"></div>
       <button onclick="resetForm()" style="background-color: #757575;">Kembali</button>
     </div>
+
   </div>
 </div>
 
 <script>
+  // 1. TANGGAL & WAKTU BUKA PENGUMUMAN
+  const tanggalBuka = new Date("2026-09-08T22:00:00").getTime();
+
+  const countdown = setInterval(function() {
+    const sekarang = new Date().getTime();
+    const selisih = tanggalBuka - sekarang;
+
+    if (selisih <= 0) {
+      clearInterval(countdown);
+      document.getElementById("timer-section").classList.add("hidden");
+      document.getElementById("form-section").classList.remove("hidden");
+    } else {
+      const hari = Math.floor(selisih / (1000 * 60 * 60 * 24));
+      const jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const menit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60));
+      const detik = Math.floor((selisih % (1000 * 60)) / 1000);
+
+      document.getElementById("timer").innerText = 
+        `${hari}h ${jam}j ${menit}m ${detik}d`;
+    }
+  }, 1000);
+
+  // 2. DATA PESERTA (Tambahkan properti 'organisasi': "OSIS" atau "MPK")
   const dataPeserta = {
-    "10001": { nama: "Ahmad Rizky", status: "LOLOS", noAbsen: "01" },
-    "10002": { nama: "Siti Rahma", status: "LOLOS", noAbsen: "14" },
-    "10003": { nama: "Budi Santoso", status: "TIDAK LOLOS", noAbsen: "08" }
+    "12345": { nama: "Idan Ganteng Banget Sih", noAbsen: "12", organisasi: "OSIS", status: "LOLOS" },
+    "2": { nama: "Dika Padang", noAbsen: "05", organisasi: "MPK", status: "LOLOS" },
+    "11223": { nama: "Ahmad Rizky", noAbsen: "02", organisasi: "MPK", status: "LOLOS" }
   };
 
+  // 3. LOGIKA CEK HASIL
   function cekHasil() {
     const input = document.getElementById("nisn").value.trim();
     const resultSection = document.getElementById("result-section");
@@ -57,10 +93,11 @@
 
       if (peserta.status === "LOLOS") {
         statusBox.className = "status-pass";
-        statusBox.innerText = "SELAMAT! ANDA DINYATAKAN LOLOS SELEKSI CALON PENGURUS OSIS";
+        statusBox.innerText = `SELAMAT! ANDA DINYATAKAN LOLOS SELEKSI CALON PENGURUS ${peserta.organisasi}`;
         userDetails.innerHTML = `
           <p><b>Nama:</b> ${peserta.nama}</p>
           <p><b>Peringkat:</b> ${peserta.noAbsen}</p>
+          <p><b>Diterima di:</b> ${peserta.organisasi}</p>
         `;
       } else {
         statusBox.className = "status-fail";
@@ -68,6 +105,7 @@
         userDetails.innerHTML = `
           <p><b>Nama:</b> ${peserta.nama}</p>
           <p><b>No. Absen:</b> ${peserta.noAbsen}</p>
+          <p><b>Pilihan Organisasi:</b> ${peserta.organisasi}</p>
           <p style="margin-top: 10px;">Tetap semangat dan terima kasih telah berpartisipasi!</p>
         `;
       }
@@ -82,5 +120,6 @@
     document.getElementById("nisn").value = "";
   }
 </script>
+
 </body>
 </html>
