@@ -37,10 +37,10 @@
 </div>
 
 <script>
-  // Data Peserta (Bisa ditambah sesuai kebutuhan)
   const dataPeserta = {
-    "12345": { nama: "Idan Ganteng", status: "LOLOS", divisi: "Sekbid Seksi Kominfo" },
-    "67890": { nama: "Budi Santoso", status: "TIDAK LOLOS", divisi: "-" }
+    "10001": { nama: "Ahmad Rizky", status: "LOLOS", noAbsen: "01" },
+    "10002": { nama: "Siti Rahma", status: "LOLOS", noAbsen: "14" },
+    "10003": { nama: "Budi Santoso", status: "TIDAK LOLOS", noAbsen: "08" }
   };
 
   function cekHasil() {
@@ -58,11 +58,18 @@
       if (peserta.status === "LOLOS") {
         statusBox.className = "status-pass";
         statusBox.innerText = "SELAMAT! ANDA DINYATAKAN LOLOS SELEKSI CALON PENGURUS OSIS";
-        userDetails.innerHTML = `<p><b>Nama:</b> ${peserta.nama}</p><p><b>Divisi/Jabatan:</b> ${peserta.divisi}</p>`;
+        userDetails.innerHTML = `
+          <p><b>Nama:</b> ${peserta.nama}</p>
+          <p><b>Peringkat:</b> ${peserta.noAbsen}</p>
+        `;
       } else {
         statusBox.className = "status-fail";
         statusBox.innerText = "MOHON MAAF, ANDA DINYATAKAN TIDAK LOLOS SELEKSI";
-        userDetails.innerHTML = `<p><b>Nama:</b> ${peserta.nama}</p><p>Tetap semangat dan terima kasih telah berpartisipasi!</p>`;
+        userDetails.innerHTML = `
+          <p><b>Nama:</b> ${peserta.nama}</p>
+          <p><b>No. Absen:</b> ${peserta.noAbsen}</p>
+          <p style="margin-top: 10px;">Tetap semangat dan terima kasih telah berpartisipasi!</p>
+        `;
       }
     } else {
       alert("Nomor pendaftaran tidak ditemukan! Periksa kembali nomor yang Anda masukkan.");
@@ -75,6 +82,5 @@
     document.getElementById("nisn").value = "";
   }
 </script>
-
 </body>
 </html>
