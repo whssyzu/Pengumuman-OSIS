@@ -2,18 +2,108 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <!-- TAG UTAMA AGAR UKURAN MENYESUAIKAN SCREEN HP & PC -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pengumuman Hasil Seleksi OSIS & MPK</title>
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; padding: 20px; }
-    .card { background: white; border-radius: 8px; width: 100%; max-width: 500px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden; }
-    .header { background: #0d47a1; color: white; padding: 15px; text-align: center; }
-    .content { padding: 20px; text-align: center; }
-    .status-pass { background-color: #2e7d32; color: white; padding: 15px; border-radius: 6px; font-weight: bold; }
-    .status-fail { background-color: #c62828; color: white; padding: 15px; border-radius: 6px; font-weight: bold; }
-    input, button { width: 100%; padding: 10px; margin-top: 10px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
-    button { background-color: #1976d2; color: white; border: none; font-weight: bold; cursor: pointer; }
-    .timer-display { font-size: 24px; font-weight: bold; color: #0d47a1; margin: 15px 0; background: #e3f2fd; padding: 15px; border-radius: 6px; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body { 
+      font-family: Arial, sans-serif; 
+      background-color: #f4f6f9; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px; 
+    }
+    .card { 
+      background: white; 
+      border-radius: 12px; 
+      width: 100%; 
+      max-width: 450px; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+      overflow: hidden; 
+    }
+    .header { 
+      background: #0d47a1; 
+      color: white; 
+      padding: 18px 15px; 
+      text-align: center; 
+    }
+    .header h3 {
+      font-size: 1.1rem;
+      line-height: 1.3;
+    }
+    .content { 
+      padding: 20px; 
+      text-align: center; 
+    }
+    .status-pass { 
+      background-color: #2e7d32; 
+      color: white; 
+      padding: 15px; 
+      border-radius: 6px; 
+      font-weight: bold; 
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+    .status-fail { 
+      background-color: #c62828; 
+      color: white; 
+      padding: 15px; 
+      border-radius: 6px; 
+      font-weight: bold; 
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+    input, button { 
+      width: 100%; 
+      padding: 12px; 
+      margin-top: 12px; 
+      border-radius: 6px; 
+      border: 1px solid #ccc; 
+      font-size: 1rem;
+    }
+    button { 
+      background-color: #1976d2; 
+      color: white; 
+      border: none; 
+      font-weight: bold; 
+      cursor: pointer; 
+    }
+    button:active {
+      background-color: #1565c0;
+    }
+    .timer-display { 
+      font-size: 1.3rem; 
+      font-weight: bold; 
+      color: #0d47a1; 
+      margin: 15px 0; 
+      background: #e3f2fd; 
+      padding: 12px; 
+      border-radius: 6px; 
+    }
     .hidden { display: none; }
+
+    /* PENYESUAIAN TAMPAKAN HP */
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+      .content {
+        padding: 15px;
+      }
+      .header h3 {
+        font-size: 1rem;
+      }
+      .timer-display {
+        font-size: 1.1rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -33,7 +123,9 @@
 
     <!-- TAMPILAN FORM -->
     <div id="form-section" class="hidden">
-      <label for="nisn" style="text-align: left; display: block;">Masukkan Nomor Pendaftaran / NISN:</label>
+      <label for="nisn" style="text-align: left; display: block; font-size: 0.9rem; font-weight: bold; color: #333;">
+        Masukkan Nomor Pendaftaran / NISN:
+      </label>
       <input type="text" id="nisn" placeholder="Contoh: 12345">
       <button onclick="cekHasil()">LIHAT HASIL SELEKSI</button>
     </div>
@@ -41,7 +133,7 @@
     <!-- TAMPILAN HASIL -->
     <div id="result-section" class="hidden" style="text-align: left;">
       <div id="status-box"></div>
-      <div style="margin-top: 15px;" id="user-details"></div>
+      <div style="margin-top: 15px; line-height: 1.6;" id="user-details"></div>
       <button onclick="resetForm()" style="background-color: #757575;">Kembali</button>
     </div>
 
@@ -71,7 +163,7 @@
     }
   }, 1000);
 
-  // 2. DATA PESERTA (Tambahkan properti 'organisasi': "OSIS" atau "MPK")
+  // 2. DATA PESERTA
   const dataPeserta = {
     "12345": { nama: "Idan Ganteng Banget Sih", noAbsen: "12", organisasi: "OSIS", status: "LOLOS" },
     "2": { nama: "Dika Padang", noAbsen: "05", organisasi: "MPK", status: "LOLOS" },
@@ -106,7 +198,7 @@
           <p><b>Nama:</b> ${peserta.nama}</p>
           <p><b>No. Absen:</b> ${peserta.noAbsen}</p>
           <p><b>Pilihan Organisasi:</b> ${peserta.organisasi}</p>
-          <p style="margin-top: 10px;">Tetap semangat dan terima kasih telah berpartisipasi!</p>
+          <p style="margin-top: 10px; color: #555;">Tetap semangat dan terima kasih telah berpartisipasi!</p>
         `;
       }
     } else {
