@@ -124,9 +124,9 @@
     <!-- TAMPILAN FORM -->
     <div id="form-section" class="hidden">
       <label for="nisn" style="text-align: left; display: block; font-size: 0.9rem; font-weight: bold; color: #333;">
-        Masukkan Nomor Pendaftaran / NISN:
+        Masukkan Nomor Pendaftaran / Nama Peserta:
       </label>
-      <input type="text" id="nisn" placeholder="Contoh: 12345">
+      <input type="text" id="nisn" placeholder="Contoh: 1 atau Sugeng Kopling">
       <button onclick="cekHasil()">LIHAT HASIL SELEKSI</button>
     </div>
 
@@ -141,8 +141,8 @@
 </div>
 
 <script>
-  // 1. TANGGAL & WAKTU BUKA PENGUMUMAN
-  const tanggalBuka = new Date("2026-09-08T22:00:00").getTime();
+  // 1. TANGGAL & WAKTU BUKA PENGUMUMAN (Bisa kamu ubah tanggal dan jamnya)
+  const tanggalBuka = new Date("2026-09-09T08:00:00").getTime();
 
   const countdown = setInterval(function() {
     const sekarang = new Date().getTime();
@@ -163,23 +163,102 @@
     }
   }, 1000);
 
-  // 2. DATA PESERTA
+  // 2. DATA PESERTA HASIL EKSTRAKSI EXCEL
   const dataPeserta = {
-    "12345": { nama: "Idan Ganteng Banget Sih", noAbsen: "12", organisasi: "OSIS", status: "LOLOS" },
-    "2": { nama: "Dika Padang", noAbsen: "05", organisasi: "MPK", status: "LOLOS" },
-    "11223": { nama: "Ahmad Rizky", noAbsen: "02", organisasi: "MPK", status: "LOLOS" }
+    "1": { nama: "Raia Atinique", kelas: "X.1", noAbsen: "28", organisasi: "OSIS", status: "LOLOS" },
+    "2": { nama: "Lailatul Apipah", kelas: "X.1", noAbsen: "15", organisasi: "OSIS", status: "LOLOS" },
+    "3": { nama: "Sinta Kurniasari", kelas: "X.1", noAbsen: "21", organisasi: "OSIS", status: "LOLOS" },
+    "4": { nama: "Ibnu Sanggabuana", kelas: "X.1", noAbsen: "43", organisasi: "OSIS", status: "TIDAK LOLOS" },
+    "5": { nama: "Zaidan Aufa Maulidina", kelas: "X.1", noAbsen: "4", organisasi: "OSIS", status: "LOLOS" },
+    "6": { nama: "Fajrina Khoirunnisa", kelas: "X.1", noAbsen: "7", organisasi: "OSIS", status: "LOLOS" },
+    "7": { nama: "Riska Amelia", kelas: "X.1", noAbsen: "26", organisasi: "OSIS", status: "LOLOS" },
+    "8": { nama: "Kholipah", kelas: "X.1", noAbsen: "35", organisasi: "OSIS", status: "TIDAK LOLOS" },
+    "9": { nama: "Clara Nabila Lutfi", kelas: "X.1", noAbsen: "33", organisasi: "OSIS", status: "LOLOS" },
+    "11": { nama: "Maspupah", kelas: "X.2", noAbsen: "5", organisasi: "OSIS", status: "LOLOS" },
+    "12": { nama: "Muhammad Adha Hujaji", kelas: "X.2", noAbsen: "38", organisasi: "OSIS", status: "TIDAK LOLOS" },
+    "13": { nama: "Nafahatuzzahra", kelas: "X.2", noAbsen: "2", organisasi: "OSIS", status: "LOLOS" },
+    "14": { nama: "Bunga Maharani", kelas: "X.3", noAbsen: "12", organisasi: "OSIS", status: "LOLOS" },
+    "15": { nama: "Salqia Ramadhani", kelas: "X.3", noAbsen: "26", organisasi: "OSIS", status: "LOLOS" },
+    "16": { nama: "Siti Saroh", kelas: "X.4", noAbsen: "40", organisasi: "OSIS", status: "TIDAK LOLOS" },
+    "17": { nama: "Ii Oktiani Fazriah", kelas: "X.4", noAbsen: "5", organisasi: "OSIS", status: "LOLOS" },
+    "18": { nama: "Hubbati Latifah Humairoh", kelas: "X.4", noAbsen: "19", organisasi: "OSIS", status: "LOLOS" },
+    "19": { nama: "Nurhaeni", kelas: "X.5", noAbsen: "40", organisasi: "MPK", status: "TIDAK LOLOS" },
+    "20": { nama: "Ayu Nazwa Octaviani", kelas: "X.5", noAbsen: "35", organisasi: "OSIS", status: "TIDAK LOLOS" },
+    "21": { nama: "Rafi Sopian", kelas: "X.6", noAbsen: "21", organisasi: "OSIS", status: "LOLOS" },
+    "22": { nama: "Muhaemin", kelas: "X.6", noAbsen: "15", organisasi: "OSIS", status: "LOLOS" },
+    "23": { nama: "Mutiara Doa", kelas: "X.6", noAbsen: "21", organisasi: "OSIS", status: "LOLOS" },
+    "24": { nama: "Muhammad Maulana Ibrahim", kelas: "X.6", noAbsen: "37", organisasi: "OSIS", status: "TIDAK LOLOS" },
+    "25": { nama: "Alvina Riskiah", kelas: "X.6", noAbsen: "32", organisasi: "OSIS", status: "LOLOS" },
+    "26": { nama: "Muhammad Noval J", kelas: "X.6", noAbsen: "19", organisasi: "OSIS", status: "LOLOS" },
+    "27": { nama: "Febby Rizqi Utami", kelas: "X.6", noAbsen: "9", organisasi: "OSIS", status: "LOLOS" },
+    "28": { nama: "Aufa Yadya Bilqis", kelas: "X.6", noAbsen: "3", organisasi: "OSIS", status: "LOLOS" },
+    "29": { nama: "Sabita Yuniar", kelas: "X.6", noAbsen: "13", organisasi: "OSIS", status: "LOLOS" },
+    "30": { nama: "Rya Natsya Dea", kelas: "X.7", noAbsen: "7", organisasi: "OSIS", status: "LOLOS" },
+    "31": { nama: "Risma Ghoiri Mamnur", kelas: "X.7", noAbsen: "40", organisasi: "OSIS", status: "TIDAK LOLOS" },
+    "32": { nama: "Rosdiana", kelas: "X.7", noAbsen: "39", organisasi: "OSIS", status: "TIDAK LOLOS" },
+    "33": { nama: "Aisya Azzahra", kelas: "X.7", noAbsen: "29", organisasi: "OSIS", status: "LOLOS" },
+    "34": { nama: "Ayu Lestari", kelas: "X.8", noAbsen: "21", organisasi: "OSIS", status: "LOLOS" },
+    "35": { nama: "Siti Badriah", kelas: "X.8", noAbsen: "17", organisasi: "OSIS", status: "LOLOS" },
+    "36": { nama: "Amelia Rosmita", kelas: "X.8", noAbsen: "17", organisasi: "OSIS", status: "LOLOS" },
+    "37": { nama: "Syifa Farhatunnisa", kelas: "X.8", noAbsen: "33", organisasi: "OSIS", status: "LOLOS" },
+    "38": { nama: "Gina Nailatirrohmah", kelas: "X.8", noAbsen: "31", organisasi: "OSIS", status: "LOLOS" },
+    "39": { nama: "Nursyifa Muniasti", kelas: "X.8", noAbsen: "13", organisasi: "OSIS", status: "LOLOS" },
+    "40": { nama: "Zahra Aulia", kelas: "X.9", noAbsen: "10", organisasi: "OSIS", status: "LOLOS" },
+    "41": { nama: "Chaliza Listiyani", kelas: "X.10", noAbsen: "1", organisasi: "OSIS", status: "LOLOS" },
+    "42": { nama: "Nada Ardilah", kelas: "X.10", noAbsen: "29", organisasi: "OSIS", status: "LOLOS" },
+    "43": { nama: "Amila Laula Kirani", kelas: "X.10", noAbsen: "10", organisasi: "OSIS", status: "LOLOS" },
+    "44": { nama: "Ratu Filzah Mubasysyaroh", kelas: "X.10", noAbsen: "21", organisasi: "OSIS", status: "LOLOS" },
+    "46": { nama: "Erni Renita", kelas: "XI.1", noAbsen: "17", organisasi: "OSIS", status: "LOLOS" },
+    "47": { nama: "Muhammad Luthfianto", kelas: "XI.1", noAbsen: "9", organisasi: "OSIS", status: "LOLOS" },
+    "48": { nama: "Kiki Rosi Ade", kelas: "XI.2", noAbsen: "12", organisasi: "OSIS", status: "LOLOS" },
+    "49": { nama: "Lintang Shabit Abellya", kelas: "XI.2", noAbsen: "5", organisasi: "MPK", status: "LOLOS" },
+    "50": { nama: "Maulana Ibrahim", kelas: "XI.2", noAbsen: "20", organisasi: "OSIS", status: "LOLOS" },
+    "51": { nama: "Fanesya Putri", kelas: "XI.3", noAbsen: "14", organisasi: "OSIS", status: "LOLOS" },
+    "52": { nama: "Ina Azzahra Mulyasari", kelas: "XI.3", noAbsen: "11", organisasi: "OSIS", status: "LOLOS" },
+    "53": { nama: "Juju Rohmawati", kelas: "XI.3", noAbsen: "20", organisasi: "OSIS", status: "LOLOS" },
+    "54": { nama: "Nuraeni", kelas: "XI.3", noAbsen: "5", organisasi: "OSIS", status: "LOLOS" },
+    "55": { nama: "Mia Amelia", kelas: "XI.4", noAbsen: "24", organisasi: "OSIS", status: "LOLOS" },
+    "56": { nama: "Muhammad Rafly", kelas: "XI.4", noAbsen: "22", organisasi: "MPK", status: "LOLOS" },
+    "57": { nama: "Laode Bayu Sampan Pratama", kelas: "XI.5", noAbsen: "7", organisasi: "OSIS", status: "LOLOS" },
+    "58": { nama: "Sulis", kelas: "XI.5", noAbsen: "8", organisasi: "MPK", status: "LOLOS" },
+    "59": { nama: "Athfal Shalih Geniardi", kelas: "XI.5", noAbsen: "4", organisasi: "OSIS", status: "LOLOS" },
+    "60": { nama: "Aira Utami", kelas: "XI.5", noAbsen: "1", organisasi: "OSIS", status: "LOLOS" },
+    "61": { nama: "Jevinkha Rosmaniya", kelas: "XI.5", noAbsen: "26", organisasi: "OSIS", status: "LOLOS" },
+    "62": { nama: "Tia Harlita", kelas: "XI.5", noAbsen: "25", organisasi: "OSIS", status: "LOLOS" },
+    "63": { nama: "Siti Susanti", kelas: "XI.5", noAbsen: "2", organisasi: "OSIS", status: "LOLOS" },
+    "64": { nama: "Siti Alawiyah", kelas: "XI.6", noAbsen: "15", organisasi: "OSIS", status: "LOLOS" },
+    "65": { nama: "Amelia Ibtihalygi", kelas: "XI.6", noAbsen: "3", organisasi: "OSIS", status: "LOLOS" },
+    "66": { nama: "Andini Lestari", kelas: "XI.6", noAbsen: "19", organisasi: "OSIS", status: "LOLOS" },
+    "67": { nama: "Derin Ria Fajria", kelas: "XI.6", noAbsen: "15", organisasi: "OSIS", status: "LOLOS" },
+    "68": { nama: "Renita", kelas: "XI.8", noAbsen: "18", organisasi: "OSIS", status: "LOLOS" },
+    "69": { nama: "Devita Maharani", kelas: "XI.9", noAbsen: "12", organisasi: "OSIS", status: "LOLOS" },
+    "70": { nama: "Nayla Raudhoti Zahro", kelas: "XI.10", noAbsen: "23", organisasi: "OSIS", status: "LOLOS" },
+    "71": { nama: "Resa Rianti", kelas: "XI.10", noAbsen: "10", organisasi: "OSIS", status: "LOLOS" }
   };
 
-  // 3. LOGIKA CEK HASIL
+  // 3. LOGIKA CEK HASIL SELEKSI
   function cekHasil() {
-    const input = document.getElementById("nisn").value.trim();
+    const input = document.getElementById("nisn").value.trim().toLowerCase();
     const resultSection = document.getElementById("result-section");
     const formSection = document.getElementById("form-section");
     const statusBox = document.getElementById("status-box");
     const userDetails = document.getElementById("user-details");
 
-    if (dataPeserta[input]) {
-      const peserta = dataPeserta[input];
+    if (!input) {
+      alert("Silakan masukkan Nomor Pendaftaran atau Nama terlebih dahulu!");
+      return;
+    }
+
+    // Pencarian berdasarkan Nomor Urut atau Nama Lengkap
+    let peserta = dataPeserta[input];
+    if (!peserta) {
+      const foundKey = Object.keys(dataPeserta).find(k => 
+        dataPeserta[k].nama.toLowerCase().includes(input)
+      );
+      if (foundKey) peserta = dataPeserta[foundKey];
+    }
+
+    if (peserta) {
       formSection.classList.add("hidden");
       resultSection.classList.remove("hidden");
 
@@ -188,6 +267,7 @@
         statusBox.innerText = `SELAMAT! ANDA DINYATAKAN LOLOS SELEKSI CALON PENGURUS ${peserta.organisasi}`;
         userDetails.innerHTML = `
           <p><b>Nama:</b> ${peserta.nama}</p>
+          <p><b>Kelas:</b> ${peserta.kelas}</p>
           <p><b>Peringkat:</b> ${peserta.noAbsen}</p>
           <p><b>Diterima di:</b> ${peserta.organisasi}</p>
         `;
@@ -196,13 +276,13 @@
         statusBox.innerText = "MOHON MAAF, ANDA DINYATAKAN TIDAK LOLOS SELEKSI";
         userDetails.innerHTML = `
           <p><b>Nama:</b> ${peserta.nama}</p>
-          <p><b>No. Absen:</b> ${peserta.noAbsen}</p>
+          <p><b>Kelas:</b> ${peserta.kelas}</p>
           <p><b>Pilihan Organisasi:</b> ${peserta.organisasi}</p>
           <p style="margin-top: 10px; color: #555;">Tetap semangat dan terima kasih telah berpartisipasi!</p>
         `;
       }
     } else {
-      alert("Nomor pendaftaran tidak ditemukan! Periksa kembali nomor yang Anda masukkan.");
+      alert("Nomor Pendaftaran atau Nama tidak ditemukan! Periksa kembali kata kunci yang Anda masukkan.");
     }
   }
 
